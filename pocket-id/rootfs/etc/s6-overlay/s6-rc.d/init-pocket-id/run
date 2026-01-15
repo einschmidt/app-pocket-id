@@ -1,0 +1,32 @@
+#!/command/with-contenv bashio
+# shellcheck shell=bash
+# ==============================================================================
+# Home Assistant Add-on: pocket-id
+# Configures pocket-id before running
+# ==============================================================================
+
+# Generate secrets
+bashio::log.debug "Starting pocket-id secrets check..."
+
+# Define secrets path
+SECRETS_PATH="/data/secrets"
+
+# Create secrets directory if it doesn't exist
+if ! bashio::fs.directory_exists "$SECRETS_PATH"; then
+    mkdir -p "$SECRETS_PATH"
+fi
+
+# Define encryption key file path
+ENCRYPTION_KEY_FILE="/data/secrets/encryption_key"
+
+# Generate encryption key if it doesn't exist
+if ! bashio::fs.file_exists "$ENCRYPTION_KEY_FILE"; then
+    if head -c 48 /dev/urandom | base64 > "$ENCRYPTION_KEY_FILE"; then
+        bashio::log.info "ENCRYPTION KEY generated and stored at $ENCRYPTION_KEY_FILE."
+    else
+        bashio::log.error "Failed to generate ENCRYPTION KEY!"
+        exit 1
+    fi
+else
+    bashio::log.debug "ENCRYPTION KEY already exists. Skipping generation."
+fi
