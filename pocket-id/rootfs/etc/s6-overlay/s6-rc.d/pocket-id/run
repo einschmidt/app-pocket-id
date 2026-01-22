@@ -18,7 +18,7 @@ fi
 # Set variables
 export APP_URL="$(bashio::config 'APP_URL')"
 export TRUST_PROXY="$(bashio::config 'TRUST_PROXY')"
-export ENCRYPTION_KEY_FILE="/data/secrets/encryption_key"
+export ENCRYPTION_KEY_FILE="/app/data/secrets/encryption_key"
 
 bashio::log.debug "APP_URL value: $APP_URL"
 bashio::log.debug "TRUST_PROXY value: $TRUST_PROXY"
