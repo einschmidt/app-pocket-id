@@ -9,24 +9,33 @@
 bashio::log.debug "Starting pocket-id secrets check..."
 
 # Define secrets path
-SECRETS_PATH="/data/secrets"
+SECRETS_PATH="/app/data/secrets"
+bashio::log.debug "Secrets path set to: $SECRETS_PATH"
 
 # Create secrets directory if it doesn't exist
 if ! bashio::fs.directory_exists "$SECRETS_PATH"; then
+    bashio::log.debug "Secrets directory does not exist. Creating it."
     mkdir -p "$SECRETS_PATH"
+else
+    bashio::log.debug "Secrets directory already exists."
 fi
 
 # Define encryption key file path
-ENCRYPTION_KEY_FILE="/data/secrets/encryption_key"
+ENCRYPTION_KEY_FILE="/app/data/secrets/encryption_key"
+bashio::log.debug "Encryption key file path set to: $ENCRYPTION_KEY_FILE"
 
-# Generate encryption key if it doesn't exist
-if ! bashio::fs.file_exists "$ENCRYPTION_KEY_FILE"; then
+# Check if encryption key file exists
+if bashio::fs.file_exists "$ENCRYPTION_KEY_FILE"; then
+    bashio::log.debug "ENCRYPTION KEY already exists. Skipping generation."
+else
+    bashio::log.debug "ENCRYPTION KEY does not exist. Generating new key."
+
     if head -c 48 /dev/urandom | base64 > "$ENCRYPTION_KEY_FILE"; then
         bashio::log.info "ENCRYPTION KEY generated and stored at $ENCRYPTION_KEY_FILE."
     else
         bashio::log.error "Failed to generate ENCRYPTION KEY!"
         exit 1
     fi
-else
-    bashio::log.debug "ENCRYPTION KEY already exists. Skipping generation."
+
 fi
+
