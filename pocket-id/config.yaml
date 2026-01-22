@@ -22,3 +22,5 @@ init: false
 map:
   - type: data
     path: /app/data
+breaking_versions:
+  - v1.3.0
