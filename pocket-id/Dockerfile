@@ -17,7 +17,7 @@ RUN \
     && if [[ "$BUILD_ARCH" = "amd64" ]]; then ARCH="amd64"; fi \
     \
     && mkdir -p /app \
-    && curl -J -L -o /app/pocket-id "https://github.com/pocket-id/pocket-id/releases/download/${POCKET_ID_VERSION}/pocket-id-linux-${ARCH}" \
+    && curl -J -L -o /app/pocket-id "https://github.com/pocket-id/pocket-id/releases/download/${POCKET_ID_VERSION}/pocket-id_linux_${ARCH}" \
     \
     && chmod +x /app/pocket-id
 
