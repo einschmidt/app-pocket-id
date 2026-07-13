@@ -11,10 +11,12 @@ options:
   log_level: "info"
   APP_URL: http://localhost
   TRUST_PROXY: false
+  TRUST_PROXY_LIST: ""
 schema:
   log_level: "list(debug|info|warn|error)"
   APP_URL: str
   TRUST_PROXY: bool
+  TRUST_PROXY_LIST: str?
   MAXMIND_LICENSE_KEY: str?
 ports:
   1411/tcp: 1411
