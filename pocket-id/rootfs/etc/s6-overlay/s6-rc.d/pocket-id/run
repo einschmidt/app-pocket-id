@@ -17,11 +17,21 @@ fi
 
 # Set variables
 export APP_URL="$(bashio::config 'APP_URL')"
-export TRUST_PROXY="$(bashio::config 'TRUST_PROXY')"
 export ENCRYPTION_KEY_FILE="/app/data/secrets/encryption_key"
 
+# Configure trusted proxies
+if bashio::config.has_value 'TRUST_PROXY_LIST'; then
+    export TRUST_PROXY="$(bashio::config 'TRUST_PROXY_LIST')"
+    bashio::log.debug "Using TRUST_PROXY_LIST: $TRUST_PROXY"
+elif bashio::config.true 'TRUST_PROXY'; then
+    export TRUST_PROXY="true"
+    bashio::log.debug 'TRUST_PROXY enabled for all proxies'
+else
+    export TRUST_PROXY="false"
+    bashio::log.debug 'TRUST_PROXY disabled'
+fi
+
 bashio::log.debug "APP_URL value: $APP_URL"
-bashio::log.debug "TRUST_PROXY value: $TRUST_PROXY"
 
 if bashio::config.has_value 'MAXMIND_LICENSE_KEY'; then
     bashio::log.debug 'MAXMIND_LICENSE_KEY has been configured. Setting environment variable...'
@@ -30,7 +40,7 @@ else
     bashio::log.debug 'No MAXMIND_LICENSE_KEY set in configuration.'
 fi
 
-APP_LOG_LEVEL="$(bashio::string.lower "$(bashio::config 'log_level')" )"
+APP_LOG_LEVEL="$(bashio::string.lower "$(bashio::config 'log_level')")"
 export LOG_LEVEL="${APP_LOG_LEVEL}"
 
 # Run pocket-id
