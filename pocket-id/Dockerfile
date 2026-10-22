@@ -6,7 +6,7 @@ FROM $BUILD_FROM
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Set pocket-id version
-ARG POCKET_ID_VERSION="v2.19.0"
+ARG POCKET_ID_VERSION="v2.19.1"
 
 # Install Pocket ID
 ARG BUILD_ARCH=amd64
